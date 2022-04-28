@@ -61,6 +61,29 @@ Create a new data object to separate release year from the title.This object can
 
 
 
+### Data visualization(1)
+```{r}
+# find the top 10 rated genres
+top10genres <- Joinnew %>%
+  group_by(genres) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))%>%
+  head(10)
+# using ggplot to show the top 10 rated genres
+top10genres %>%
+  ggplot(aes(x =reorder(genres,-count), y = count,fill=genres)) +
+  geom_bar(stat='identity') +
+  ggtitle('Top 10 Rated Movie Genres') +
+  xlab('Movie Genres') +
+  ylab('Rated Frequency')+
+  theme(axis.text.x=element_blank())
+
+```
+interpretive statement:
+This chart shown the top 10 genres of these movies by decending order should be Drama,Comedy|Crime|Drama|Thriller,Comedy, Drama|Romance,Action|Crime|Drama|Thriller,Comedy|Drama|Romance,Action|Adventure|Sci-Fi, Comedy|Romance,Documentary,Comedy|Drama.Among all of these, Drama almost 30% higher than the second place which is Comedy crime. Drama is the most frequently one. The catagories are very meticulous.
+
+
+
 
 
 
