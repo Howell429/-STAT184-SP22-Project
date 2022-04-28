@@ -1,18 +1,72 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Final_Project_SP22"
+author: "Haoyu Lyu"
+date: "4/26/2022"
+output: html_document
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
-```{r}
-plot(cars)
+```{r setup, include=FALSE}
+# Library the package
+library(tidyverse)
+library(lubridate)
+# Read the data
+ratings <- read_csv('ratings.csv')
+movies <- read_csv('movies.csv')
+tags <- read_csv('tags.csv')
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+### Data Wrangling(1)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r message=FALSE,warning=FALSE}
+# Set the time format
+tags <- tags %>%
+  mutate(tag_date = as_datetime(timestamp))
+ratings <- ratings %>%
+  mutate(rating_date = as_datetime(timestamp))
+# show head three row
+head(ratings,3)
+head(tags,3)
+```
+
+### Data wrangling(2)
+
+```{r}
+# Join the data tifether and select 7 variables to show as instruction
+join <- ratings %>%
+  inner_join(tags,by=c('userId','movieId')) %>%
+  inner_join(movies,by='movieId') %>%
+  select('userId', 'rating', 'rating_date', 'tag', 'tag_date', 'title', 'genres')
+# show head three row
+head(join,3)
+```
+Creating a new object called join which shown both rated and tagged movie for further analysis. Put the data together is a way called join.
+
+
+### Data wrangling(3)
+
+```{r}
+# Tidy the data by instruction
+Joinnew <- join %>%
+  mutate(release_year = str_extract(title,"\\(\\d{4}\\)$")) %>%
+  mutate(title = gsub(pattern = "\\(\\d{4}\\)$", replacement = "", title)) %>%
+  mutate(release_year = gsub(pattern = "[()]", replacement = "", release_year))
+# show head three row
+head(Joinnew,3)
+```
+Create a new data object to separate release year from the title.This object can show release year of each movie to give us furture analysis based on the movie year.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
