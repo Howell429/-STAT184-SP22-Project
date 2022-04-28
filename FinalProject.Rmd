@@ -84,10 +84,33 @@ This chart shown the top 10 genres of these movies by decending order should be 
 
 
 
+### Data visualization(2)
+Questions: What's the top 10 rated tag between 2010 to 2020?
+```{r}
+top10Tags <- Joinnew %>%
+  group_by(tag) %>%
+  filter(between(release_year,2010,2020))%>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  head(10)
+top10Tags %>%
+  ggplot(aes(x =reorder(tag,-count), y = count,fill=tag)) +
+  geom_bar(stat='identity') +
+  ggtitle('Top 10 rated tag between 2010-2020') +
+  xlab('Movie Tag') +
+  ylab('Rated Frequency')+
+  theme(axis.text.x=element_blank())
+```
+interpretive statement:
+As we all know, the comment tag should be one of the most important elements for a film because when we do marketing for a film, we need to know what should be the movie theme spot and make the decision about adding some elements. As a result, it should be important for us to know what should be the most popular movie tag the audiences like in the last ten years, because data older than ten years is useless for our analysis and decision making. As a result, we can see that over the last ten years, the tags funny movie and visually appealing have risen to the top of the list. The top ten tags are amusing, visually appealing, atmospheric, thought-provoking, action, cinematography, suspense, superhero, dreamlike, and predictable. That can tell us that when we do movie publicity, the tag should be chosen based on the tag.Only the movie with the highest rating will allow the studios to profit. As a result, the rater's tag is important for movie studios to share and make more movies based on the hottest tag.
 
+### Resources
 
+Select the best way to remove the parentheses:https://statisticsglobe.com/remove-parentheses-character-string-r
 
+### repo address
 
+https://github.com/Howell429/STAT184-SP22-Project/blob/master/FinalProject.Rmd
 
 
 
